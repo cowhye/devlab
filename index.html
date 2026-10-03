@@ -32,7 +32,7 @@
         footer { margin-top: 30px; font-size: 13px; color: var(--sub-text); text-align: center; }
         footer a { color: var(--primary); text-decoration: none; }
 
-        /* 쿠키/GA4 동의 배너 스타일 */
+        /* GA4 동의 안내 배너 */
         .consent-banner {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: #1e293b; color: white; padding: 16px 20px;
@@ -120,18 +120,18 @@
             document.getElementById('consent-banner').style.display = 'none';
         }
 
-        // 동의 시에만 동적으로 GA4 스크립트 로드
+        // 동의 시에만 전달해주신 진짜 GA4 측정 ID(G-020J2KB24N) 로드
         function loadGA4() {
             let script = document.createElement('script');
             script.async = true;
-            script.src = "https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX";
+            script.src = "https://www.googletagmanager.com/gtag/js?id=G-020J2KB24N";
             document.head.appendChild(script);
 
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             window.gtag = gtag;
             gtag('js', new Date());
-            gtag('config', 'G-XXXXXXXXXX');
+            gtag('config', 'G-020J2KB24N');
         }
 
         function sendGAEvent(eventName, params = {}) {
