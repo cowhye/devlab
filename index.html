@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나와 닮은 동물 찾기 - 성향 분석 테스트</title>
+
+    <!-- Google Analytics 4 (GA4) 연동 코드 -->
+    <!-- 'G-XXXXXXXXXX' 항목을 본인의 GA4 측정 ID로 변경하세요. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --sub-text: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            padding: 30px 24px;
+            text-align: center;
+            margin: auto 0;
+        }
+
+        .icon-header {
+            font-size: 60px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        p.description {
+            font-size: 15px;
+            color: var(--sub-text);
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background-color: var(--primary);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .option-btn {
+            background-color: #f1f5f9;
+            color: var(--text);
+            box-shadow: none;
+            margin-bottom: 12px;
+            text-align: left;
+            padding: 16px 20px;
+        }
+
+        .option-btn:hover {
+            background-color: #e2e8f0;
+            color: var(--text);
+            transform: translateY(-1px);
+        }
+
+        /* 퀴즈 단계 조절 */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 13px;
+            color: var(--sub-text);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .result-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .result-animal {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 메인/시작 페이지 -->
+        <div id="page-start" class="page active">
+            <div class="icon-header">🐶🐱🦊</div>
+            <h1>나와 닮은 동물 찾기</h1>
+            <p class="description">간단한 3개 질문으로 알아보는 나의 성향 분석 테스트!<br>나는 과연 어떤 동물과 닮았을까요?</p>
+            <button class="btn" onclick="startTest()">테스트 시작하기</button>
+        </div>
+
+        <!-- 질문 1 -->
+        <div id="page-q1" class="page">
+            <div class="progress-bar"><div class="progress" style="width: 33%;"></div></div>
+            <p class="description">Q1. 주말에 약속이 없을 때 나는?</p>
+            <button class="btn option-btn" onclick="selectAnswer('E', 'q1')">집에 있으면 답답하다, 일단 밖으로 나간다!</button>
+            <button class="btn option-btn" onclick="selectAnswer('I', 'q1')">이불 밖은 위험해! 하루 종일 누워서 쉰다.</button>
+        </div>
+
+        <!-- 질문 2 -->
+        <div id="page-q2" class="page">
+            <div class="progress-bar"><div class="progress" style="width: 66%;"></div></div>
+            <p class="description">Q2. 새로운 프로젝트나 일을 시작할 때 나는?</p>
+            <button class="btn option-btn" onclick="selectAnswer('E', 'q2')">사람들과 대화하고 논의하면서 아이디어를 얻는다.</button>
+            <button class="btn option-btn" onclick="selectAnswer('I', 'q2')">혼자 깊게 조사하고 구체적인 계획부터 세운다.</button>
+        </div>
+
+        <!-- 질문 3 -->
+        <div id="page-q3" class="page">
+            <div class="progress-bar"><div class="progress" style="width: 100%;"></div></div>
+            <p class="description">Q3. 친구가 고민을 상담할 때 나의 반응은?</p>
+            <button class="btn option-btn" onclick="selectAnswer('E', 'q3')">열심히 공감해 주고 기분을 풀어주려 노력한다.</button>
+            <button class="btn option-btn" onclick="selectAnswer('I', 'q3')">문제의 원인을 분석하고 현실적인 해결책을 제안한다.</button>
+        </div>
+
+        <!-- 결과 페이지 -->
+        <div id="page-result" class="page">
+            <div class="icon-header" id="result-emoji">🎉</div>
+            <h1>분석 결과</h1>
+            <div class="result-box">
+                <div class="result-animal" id="result-title">결과 분석 중...</div>
+                <p id="result-desc" style="font-size: 14px; color: #475569;"></p>
+            </div>
+            <button class="btn" onclick="restartTest()">다시 테스트하기</button>
+        </div>
+    </div>
+
+    <!-- 푸터 (개인정보처리방침 필수 링크) -->
+    <footer>
+        <p>© 2026 Animal Personality Test. All rights reserved.</p>
+        <p><a href="privacy.html">개인정보처리방침 (Privacy Policy)</a></p>
+    </footer>
+
+    <script>
+        let scores = { E: 0, I: 0 };
+
+        // GA4 이벤트 전송 함수
+        function sendGAEvent(eventName, params = {}) {
+            if (typeof gtag === 'function') {
+                gtag('event', eventName, params);
+            }
+        }
+
+        function startTest() {
+            scores = { E: 0, I: 0 };
+            document.getElementById('page-start').classList.remove('active');
+            document.getElementById('page-q1').classList.add('active');
+            
+            // GA4: 테스트 시작 이벤트 추적
+            sendGAEvent('quiz_start', { 'quiz_name': 'animal_personality' });
+        }
+
+        function selectAnswer(type, questionId) {
+            scores[type]++;
+            
+            // GA4: 질문 응답 이벤트 추적
+            sendGAEvent('quiz_progress', {
+                'question_id': questionId,
+                'selected_option': type
+            });
+
+            if (questionId === 'q1') {
+                document.getElementById('page-q1').classList.remove('active');
+                document.getElementById('page-q2').classList.add('active');
+            } else if (questionId === 'q2') {
+                document.getElementById('page-q2').classList.remove('active');
+                document.getElementById('page-q3').classList.add('active');
+            } else if (questionId === 'q3') {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('page-q3').classList.remove('active');
+            document.getElementById('page-result').classList.add('active');
+
+            let animal = "";
+            let emoji = "";
+            let desc = "";
+
+            if (scores.E >= 2) {
+                animal = "친근하고 활발한 '골든리트리버'";
+                emoji = "🐶";
+                desc = "당신은 에너지가 넘치고 사람들과 함께할 때 즐거움을 느끼는 인싸 타입입니다!";
+            } else {
+                animal = "신중하고 차분한 '은둔 고양이'";
+                emoji = "🐱";
+                desc = "당신은 혼자만의 시간을 소중히 여기며, 깊이 있는 생각을 좋아하는 조용한 전략가 타입입니다!";
+            }
+
+            document.getElementById('result-title').innerText = animal;
+            document.getElementById('result-emoji').innerText = emoji;
+            document.getElementById('result-desc').innerText = desc;
+
+            // GA4: 최종 결과 확인(전환) 이벤트 추적
+            sendGAEvent('quiz_complete', {
+                'quiz_result': animal
+            });
+        }
+
+        function restartTest() {
+            document.getElementById('page-result').classList.remove('active');
+            document.getElementById('page-start').classList.add('active');
+        }
+    </script>
+</body>
+</html>
